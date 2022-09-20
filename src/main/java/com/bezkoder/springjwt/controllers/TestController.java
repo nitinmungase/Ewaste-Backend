@@ -10,7 +10,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -44,24 +48,25 @@ public class TestController {
   public List<Ewaste> getItems(){
 		return this.ewasteService.getItems();
 	}
-  /*public ResponseEntity<List<Tutorial>> getAllTutorials(@Valid @RequestParam(required = false) String title) {
+  
+  
+  @PostMapping("/user")
+  @PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
+	public Ewaste addItem(@RequestBody Ewaste item)
+	{
+		return this.ewasteService.addItem(item);
+	}
+  
+  @DeleteMapping("/user/{itemId}")
+  @PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
+	public ResponseEntity<HttpStatus> deleteItem(@PathVariable String itemId){
 		try {
-			List<Tutorial> tutorials = new ArrayList<Tutorial>();
-
-			if (title == null)
-				tutorialRepository.findAll().forEach(tutorials::add);
-			else
-				tutorialRepository.findByTitleContaining(title).forEach(tutorials::add);
-
-			if (tutorials.isEmpty()) {
-				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-			}
-
-			return new ResponseEntity<>(tutorials, HttpStatus.OK);
+			this.ewasteService.deleteItem(Long.parseLong(itemId));
+			return new ResponseEntity<>(HttpStatus.OK);
 		} catch (Exception e) {
-			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-	}*/
+	}
   
   @GetMapping("/mod")
   @PreAuthorize("hasRole('MODERATOR')")

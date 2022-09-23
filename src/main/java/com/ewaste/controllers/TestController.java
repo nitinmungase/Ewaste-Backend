@@ -32,21 +32,21 @@ public class TestController {
   }
 
   @GetMapping("/user/{username}")
-  @PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
+  @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
   public ResponseEntity<List<Ewaste>>  getItem(@PathVariable String username){
 		return new ResponseEntity<List<Ewaste>>(ewasteService.findByUsername(username),HttpStatus.OK);
 	}
   
   
   @PostMapping("/user")
-  @PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
+  @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
 	public Ewaste addItem(@RequestBody Ewaste item)
 	{
 		return this.ewasteService.addItem(item);
 	}
   
   @PutMapping("/user")
-  //@PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
+  @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
   public Ewaste updateItem(@RequestBody Ewaste item) 
 	{
 		return this.ewasteService.updateItem(item);
@@ -56,7 +56,7 @@ public class TestController {
   
   
   @DeleteMapping("/user/{itemId}")
-  @PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
+  @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
 	public ResponseEntity<HttpStatus> deleteItem(@PathVariable int itemId){
 		try {
 			this.ewasteService.deleteItem(itemId);
